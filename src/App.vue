@@ -5,8 +5,21 @@
       <router-link to="/about">About</router-link>
     </div>
     <router-view />
+    <Base />
   </div>
 </template>
+
+<script>
+import Base from "./components/Base";
+import { Component, Vue } from "vue-property-decorator";
+
+@Component({
+  components: {
+    Base
+  }
+})
+export default class App extends Vue {}
+</script>
 
 <style lang="scss">
 #app {
