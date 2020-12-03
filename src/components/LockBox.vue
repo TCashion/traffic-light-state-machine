@@ -1,6 +1,8 @@
 <template>
   <div class="LockBox">
-    <actor />
+    <div class="LockBox__door">
+      <actor />
+    </div>
   </div>
 </template>
 
@@ -22,10 +24,16 @@ export default LockBox;
 
 <style lang="scss">
 .LockBox {
-  height: 100px;
-  width: 100px;
-  border: solid black 2px;
-  margin: 0 auto;
+  height: 100%;
   display: flex;
+  align-items: center;
+
+  &__door {
+    height: 100px;
+    width: 100px;
+    border: solid black 2px;
+    margin: 0 auto;
+    display: flex;
+  }
 }
 </style>

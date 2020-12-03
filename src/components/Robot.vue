@@ -1,6 +1,7 @@
 <template>
   <div class="Robot">
     <h1>Robot</h1>
+    <hr />
     <lock-box />
   </div>
 </template>
@@ -20,5 +21,6 @@ export default class Robot extends Vue {}
 <style lang="scss">
 .Robot {
   width: 25rem;
+  height: 430px;
 }
 </style>
