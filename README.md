@@ -1,5 +1,7 @@
 # vue-useless-state-machine
 
+This is a basic demonstration of [XState](https://xstate.js.org/) powering a useless state machine. 
+
 ## Project setup
 ```
 npm install
