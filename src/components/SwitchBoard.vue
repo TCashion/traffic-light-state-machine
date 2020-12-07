@@ -3,24 +3,32 @@
     <h1>Switch Board</h1>
     <hr />
     <div class="SwitchBoard__switches">
-      <div
-        class="SwitchBoard__switches__switch"
+      <SwitchUnit
+        @clicked="handleClick"
         v-for="n in switchCount"
+        :switchName="`switch-${n}`"
         :key="n"
-      >
-        {{ n }}
-      </div>
+      />
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import SwitchUnit from "./SwitchUnit.vue";
 
-@Component({})
+@Component({
+  components: {
+    SwitchUnit
+  }
+})
 export default class SwitchBoard extends Vue {
   switchCount = 5;
   // state includes number of switches...
+
+  handleClick(e: string) {
+    console.log("clicked " + e);
+  }
 }
 </script>
 
@@ -33,13 +41,6 @@ export default class SwitchBoard extends Vue {
     display: flex;
     flex-direction: column;
     align-items: center;
-
-    &__switch {
-      height: 50px;
-      width: 50px;
-      border: 2px solid black;
-      margin: 1rem;
-    }
   }
 }
 </style>
