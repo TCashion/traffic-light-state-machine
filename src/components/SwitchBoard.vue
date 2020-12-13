@@ -17,8 +17,9 @@
 import { Component, Vue } from "vue-property-decorator";
 import SwitchUnit from "./SwitchUnit.vue";
 import { switchMachine } from "../util/state-machine";
-import { send } from "xstate";
-import { useMachine } from "@xstate/vue";
+import { interpret } from "xstate";
+// import { useMachine } from "@xstate/vue";
+import VueCompositionAPI from "@vue/composition-api";
 
 @Component({
   components: {
@@ -27,20 +28,29 @@ import { useMachine } from "@xstate/vue";
 })
 export default class SwitchBoard extends Vue {
   switchCount = 5;
-  // state includes number of switches...
+  // state machine variables:
+  switchService = interpret(switchMachine);
+  current = switchMachine.initialState;
+  context = switchMachine.context;
 
-  setup() {
-    // this is for Vue3. Use https://xstate.js.org/docs/recipes/vue.html for Vue2
-    const { state, send } = useMachine(switchMachine);
-    console.log("state: ", state);
-    return {
-      state,
-      send
-    };
+  created() {
+    Vue.use(VueCompositionAPI);
+    this.switchService
+      .onTransition(state => {
+        this.current = state;
+        this.context = state.context;
+      })
+      .start();
   }
 
   handleClick(e: string) {
     console.log("clicked " + e);
+    this.send("TOGGLE");
+  }
+
+  send(event: string) {
+    this.switchService.send(event);
+    console.log(this.current.value);
   }
 }
 </script>
