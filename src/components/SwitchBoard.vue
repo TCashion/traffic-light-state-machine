@@ -16,6 +16,9 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import SwitchUnit from "./SwitchUnit.vue";
+import { switchMachine } from "../util/state-machine";
+import { send } from "xstate";
+import { useMachine } from "@xstate/vue";
 
 @Component({
   components: {
@@ -25,6 +28,16 @@ import SwitchUnit from "./SwitchUnit.vue";
 export default class SwitchBoard extends Vue {
   switchCount = 5;
   // state includes number of switches...
+
+  setup() {
+    // this is for Vue3. Use https://xstate.js.org/docs/recipes/vue.html for Vue2
+    const { state, send } = useMachine(switchMachine);
+    console.log("state: ", state);
+    return {
+      state,
+      send
+    };
+  }
 
   handleClick(e: string) {
     console.log("clicked " + e);
