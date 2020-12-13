@@ -8,18 +8,19 @@
         v-for="n in switchCount"
         :switchName="`switch-${n}`"
         :key="n"
+        :class="
+          currentValue === 'noneSwitched'
+            ? 'SwitchBoard__switches__unswitched'
+            : 'SwitchBoard__switches__switched'
+        "
       />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Prop } from "vue-property-decorator";
 import SwitchUnit from "./SwitchUnit.vue";
-import { switchMachine } from "../util/state-machine";
-import { interpret } from "xstate";
-// import { useMachine } from "@xstate/vue";
-import VueCompositionAPI from "@vue/composition-api";
 
 @Component({
   components: {
@@ -27,30 +28,12 @@ import VueCompositionAPI from "@vue/composition-api";
   }
 })
 export default class SwitchBoard extends Vue {
-  switchCount = 5;
-  // state machine variables:
-  switchService = interpret(switchMachine);
-  current = switchMachine.initialState;
-  context = switchMachine.context;
+  @Prop({ type: String, required: true }) readonly currentValue!: string;
 
-  created() {
-    Vue.use(VueCompositionAPI);
-    this.switchService
-      .onTransition(state => {
-        this.current = state;
-        this.context = state.context;
-      })
-      .start();
-  }
+  switchCount = 1;
 
-  handleClick(e: string) {
-    console.log("clicked " + e);
-    this.send("TOGGLE");
-  }
-
-  send(event: string) {
-    this.switchService.send(event);
-    console.log(this.current.value);
+  handleClick(eventTarget: string) {
+    this.$emit("clicked");
   }
 }
 </script>
@@ -64,6 +47,12 @@ export default class SwitchBoard extends Vue {
     display: flex;
     flex-direction: column;
     align-items: center;
+    &__switched {
+      background-color: black;
+    }
+    &__unswitched {
+      background-color: transparent;
+    }
   }
 }
 </style>

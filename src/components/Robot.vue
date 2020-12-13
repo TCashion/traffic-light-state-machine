@@ -2,12 +2,12 @@
   <div class="Robot">
     <h1>Robot</h1>
     <hr />
-    <lock-box />
+    <lock-box :currentValue="currentValue" />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Prop } from "vue-property-decorator";
 import LockBox from "./LockBox.vue";
 
 @Component({
@@ -15,7 +15,9 @@ import LockBox from "./LockBox.vue";
     LockBox
   }
 })
-export default class Robot extends Vue {}
+export default class Robot extends Vue {
+  @Prop({ type: String, required: true }) readonly currentValue!: string;
+}
 </script>
 
 <style lang="scss">

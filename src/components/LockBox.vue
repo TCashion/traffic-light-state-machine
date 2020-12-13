@@ -1,13 +1,19 @@
 <template>
   <div class="LockBox">
-    <div class="LockBox__door">
+    <div
+      :class="
+        currentValue === 'noneSwitched'
+          ? 'LockBox__door__closed'
+          : 'LockBox__door__open'
+      "
+    >
       <actor />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Prop } from "vue-property-decorator";
 import Actor from "./Actor.vue";
 
 @Component({
@@ -17,6 +23,7 @@ import Actor from "./Actor.vue";
 })
 class LockBox extends Vue {
   // this can have states open and close, which toggle different styles
+  @Prop({ type: String, required: true }) readonly currentValue!: string;
 }
 
 export default LockBox;
@@ -27,13 +34,24 @@ export default LockBox;
   height: 100%;
   display: flex;
   align-items: center;
+  justify-content: center;
 
   &__door {
-    height: 100px;
-    width: 100px;
-    border: solid black 2px;
-    margin: 0 auto;
-    display: flex;
+    &__open,
+    &__closed {
+      height: 100px;
+      width: 100px;
+      border: solid black 2px;
+      margin: 0 auto;
+      display: flex;
+    }
+  }
+
+  &__door__open {
+    background: transparent;
+  }
+  &__door__closed {
+    background: black;
   }
 }
 </style>
