@@ -26,6 +26,10 @@ export default class Robot extends Vue {
   onStateChanged() {
     if (this.$store.state.switchStack.length > 0) {
       console.log("machine engaged!!!");
+      setTimeout(() => {
+        this.$store.commit("popFromSwitchStack"),
+          console.log(this.$store.state.switchStack.length);
+      }, 1000);
     }
   }
 }

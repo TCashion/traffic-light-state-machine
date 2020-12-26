@@ -16,6 +16,12 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    popFromSwitchStack(state) {
+      state.switchStack.pop();
+      if (state.switchStack.length === 0) {
+        state.currentSwitchState = SwitchState.NONE_SWITCHED;
+      }
+    },
     pushToSwitchStack(state, payload: Switch) {
       state.switchStack.push(payload);
     },

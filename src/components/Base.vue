@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import Robot from "./Robot.vue";
 import SwitchBoard from "./SwitchBoard.vue";
 import { switchMachine } from "../util/switch-machine";
@@ -24,8 +24,19 @@ import { Switch } from "../types/types";
 export default class Base extends Vue {
   // state machine variables:
   switchService = interpret(switchMachine);
-  current = switchMachine.initialState;
   context = switchMachine.context;
+  current = switchMachine.initialState;
+
+  get currentSwitchState() {
+    return this.$store.state.currentSwitchState;
+  }
+
+  @Watch("currentSwitchState")
+  onStateChanged() {
+    if (this.$store.state.switchStack.length === 0) {
+      // NEXT: RESET TO INITIAL STATE
+    }
+  }
 
   created() {
     this.switchService
