@@ -4,13 +4,14 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
+import { Switch } from "../types/types";
 
 @Component
 export default class SwitchUnit extends Vue {
-  @Prop({ type: String, required: true }) readonly switchName!: string;
+  @Prop({ type: String, required: true }) readonly switchName!: Switch;
 
   handleClick() {
-    this.$emit("clicked", this.switchName);
+    this.$emit("clicked", this.switchName as Switch);
   }
 }
 </script>

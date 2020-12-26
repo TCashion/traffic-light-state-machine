@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 import LockBox from "./LockBox.vue";
 
 @Component({
@@ -17,6 +17,17 @@ import LockBox from "./LockBox.vue";
 })
 export default class Robot extends Vue {
   @Prop({ type: String, required: true }) readonly currentValue!: string;
+
+  get currentSwitchState() {
+    return this.$store.state.currentSwitchState;
+  }
+
+  @Watch("currentSwitchState")
+  onStateChanged() {
+    if (this.$store.state.switchStack.length > 0) {
+      console.log("machine engaged!!!");
+    }
+  }
 }
 </script>
 

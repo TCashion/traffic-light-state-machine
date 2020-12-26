@@ -21,6 +21,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import SwitchUnit from "./SwitchUnit.vue";
+import { Switch } from "../types/types";
 
 @Component({
   components: {
@@ -32,8 +33,8 @@ export default class SwitchBoard extends Vue {
 
   switchCount = 1;
 
-  handleClick(eventTarget: string) {
-    this.$emit("clicked");
+  handleClick(eventTarget: Switch) {
+    this.$emit("clicked", eventTarget);
   }
 }
 </script>
