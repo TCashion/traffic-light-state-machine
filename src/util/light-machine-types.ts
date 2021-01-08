@@ -1,16 +1,14 @@
-// import { EventObject } from "xstate";
+import { EventObject } from "xstate";
+import { LightColors } from "../types/types";
 
 export const LIGHT = "light";
 
-// export enum SwitchState {
-//   NONE_SWTICHED = "noneSwitched",
-//   SOME_SWITCHED = "someSwitched"
-// }
+export enum LightState {
+  RED = LightColors.RED,
+  YELLOW = LightColors.YELLOW,
+  GREEN = LightColors.GREEN
+}
 
-// export enum SwitchEvent {
-//   TOGGLE = "TOGGLE"
-// }
-
-// export interface SwitchEventObject extends EventObject {
-//   type: typeof SwitchEvent.TOGGLE;
-// }
+export interface LightEventObject extends EventObject {
+  type: "TOGGLE_RED" | "TOGGLE_YELLOW" | "TOGGLE_GREEN";
+}
