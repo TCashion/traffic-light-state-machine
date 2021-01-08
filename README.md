@@ -1,6 +1,6 @@
-# vue-useless-state-machine
+# Vue & XState Traffic Light
 
-This is a basic demonstration of [XState](https://xstate.js.org/) powering a useless state machine. 
+This is a basic demonstration of [XState](https://xstate.js.org/) powering a traffic light. 
 
 ## Project setup
 ```
