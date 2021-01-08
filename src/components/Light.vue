@@ -1,12 +1,14 @@
 <template>
-  <div class="Light"></div>
+  <div :class="`Light ${color}`"></div>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Vue, Component, Prop } from "vue-property-decorator";
 
 @Component
-export default class Light extends Vue {}
+export default class Light extends Vue {
+  @Prop({ type: String, required: true }) readonly color!: string;
+}
 </script>
 
 <style lang="scss">
@@ -16,5 +18,21 @@ export default class Light extends Vue {}
   border: 2px solid black;
   margin: 1rem;
   border-radius: 50%;
+}
+
+.red {
+  background-color: red;
+}
+
+.yellow {
+  background-color: yellow;
+}
+
+.green {
+  background-color: green;
+}
+
+.off {
+  background-color: black;
 }
 </style>

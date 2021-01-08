@@ -1,3 +1,9 @@
 export interface Light {
-  lightColor: "red" | "yello" | "green";
+  lightColor: LightColors.RED | LightColors.YELLOW | LightColors.GREEN;
+}
+
+export enum LightColors {
+  RED = "red",
+  YELLOW = "yellow",
+  GREEN = "green"
 }

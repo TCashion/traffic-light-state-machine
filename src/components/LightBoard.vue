@@ -1,18 +1,8 @@
 <template>
   <div class="LightBoard">
     <h1>Light Board</h1>
-    <hr />
-    <div class="LightBoard__switches">
-      <!-- <Light
-        @clicked="handleClick"
-        :switchName="`switch-${n}`"
-        :key="n"
-        :class="
-          currentValue === 'noneSwitched'
-            ? 'LightBoard__switches__unswitched'
-            : 'LightBoard__switches__switched'
-        "
-      /> -->
+    <div class="LightBoard__panel">
+      <Light v-for="color in lightColors" :key="color" :color="color" />
     </div>
   </div>
 </template>
@@ -20,6 +10,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import Light from "./Light.vue";
+import { LightColors } from "../types/types";
 
 @Component({
   components: {
@@ -27,9 +18,11 @@ import Light from "./Light.vue";
   }
 })
 export default class LightBoard extends Vue {
-  // handleClick(eventTarget: Switch) {
-  //   this.$emit("clicked", eventTarget);
-  // }
+  lightColors: LightColors[] = [
+    LightColors.RED,
+    LightColors.YELLOW,
+    LightColors.GREEN
+  ];
 }
 </script>
 
@@ -38,10 +31,15 @@ export default class LightBoard extends Vue {
   width: 25rem;
   height: 100%;
 
-  &__switches {
+  &__panel {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    border: black 2px solid;
+    height: 300px;
+    width: 125px;
+    margin: 15px auto;
     &__switched {
       background-color: black;
     }
