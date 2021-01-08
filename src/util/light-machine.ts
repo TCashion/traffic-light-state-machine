@@ -6,30 +6,34 @@ import { LIGHT, LightState, LightEventObject } from "./light-machine-types";
 // after the light is red for 5 seconds, toggle to yellow
 export const lightMachine = Machine<any, LightEventObject>({
   id: LIGHT,
-  initial: LightState.RED,
-  states: {
-    [LightState.RED]: {
-      on: {
-        TOGGLE_GREEN: {
-          target: LightState.GREEN
-        }
-      }
-    },
-    [LightState.YELLOW]: {
-      on: {
-        TOGGLE_RED: {
-          target: LightState.RED
-        }
-      }
-    },
-    [LightState.GREEN]: {
-      on: {
-        TOGGLE_YELLOW: {
-          target: LightState.YELLOW
-        }
-      }
-    }
-  }
+  initial: LightState.RED
+
+  // NEED TO FIND ERROR
+
+  // states: {
+  //   [LightState.RED]: {
+  //     on: {
+  //       TOGGLE_GREEN: {
+  //         target: LightState.GREEN,
+  //       },
+  //     },
+  //   },
+  //   [LightState.YELLOW]: {
+  //     on: {
+  //       TOGGLE_RED: {
+  //         target: LightState.RED
+  //       }
+  //     },
+  //   },
+  //   [LightState.GREEN]: {
+  //     on: {
+  //       TOGGLE_YELLOW: {
+  //         target: LightState.YELLOW
+  //       }
+  //     },
+  //   },
+  // },
+
   // states: {
   //   [SwitchState.NONE_SWTICHED]: {
   //     on: { [SwitchEvent.TOGGLE]: SwitchState.SOME_SWITCHED }
