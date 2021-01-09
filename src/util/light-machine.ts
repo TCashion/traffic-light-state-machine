@@ -1,10 +1,10 @@
-import { Machine } from "xstate";
+import { Machine } from 'xstate'
 import {
   LIGHT,
   LightState,
   LightEventObject,
-  LightStateSchema
-} from "./light-machine-types";
+  LightStateSchema,
+} from './light-machine-types'
 
 // when toggled on, the red light should stay for five seconds
 // after the light is green for 5 seconds, should be yellow for 2 seconds
@@ -16,23 +16,23 @@ export const lightMachine = Machine<void, LightStateSchema, LightEventObject>({
     [LightState.RED]: {
       on: {
         TOGGLE_GREEN: {
-          target: LightState.GREEN
-        }
-      }
+          target: LightState.GREEN,
+        },
+      },
     },
     [LightState.YELLOW]: {
       on: {
         TOGGLE_RED: {
-          target: LightState.RED
-        }
-      }
+          target: LightState.RED,
+        },
+      },
     },
     [LightState.GREEN]: {
       on: {
         TOGGLE_YELLOW: {
-          target: LightState.YELLOW
-        }
-      }
-    }
-  }
-});
+          target: LightState.YELLOW,
+        },
+      },
+    },
+  },
+})

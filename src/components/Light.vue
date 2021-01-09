@@ -3,11 +3,11 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component, Prop } from 'vue-property-decorator'
 
 @Component
 export default class Light extends Vue {
-  @Prop({ type: String, required: true }) readonly color!: string;
+  @Prop({ type: String, required: true }) readonly color!: string
 }
 </script>
 

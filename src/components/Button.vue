@@ -5,12 +5,12 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Vue, Component } from 'vue-property-decorator'
 
 @Component
 class Button extends Vue {}
 
-export default Button;
+export default Button
 </script>
 
 <style lang="scss">

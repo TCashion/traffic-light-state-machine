@@ -8,21 +8,21 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import Light from "./Light.vue";
-import { LightColors } from "../types/types";
+import { Component, Vue } from 'vue-property-decorator'
+import Light from './Light.vue'
+import { LightColors } from '../types/types'
 
 @Component({
   components: {
-    Light
-  }
+    Light,
+  },
 })
 export default class LightBoard extends Vue {
   lightColors: LightColors[] = [
     LightColors.RED,
     LightColors.YELLOW,
-    LightColors.GREEN
-  ];
+    LightColors.GREEN,
+  ]
 }
 </script>
 
