@@ -2,6 +2,7 @@
   <div class="Base" id="base">
     <div class="Base__container">
       <light-board />
+      <Button />
     </div>
   </div>
 </template>
@@ -9,11 +10,13 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import LightBoard from "./LightBoard.vue";
+import Button from "./Button.vue";
 import { lightMachine } from "../util/light-machine";
 import { interpret } from "xstate";
 
 @Component({
   components: {
+    Button,
     LightBoard
   }
 })
@@ -38,11 +41,11 @@ export default class Base extends Vue {
 .Base {
   display: flex;
   justify-content: center;
-  flex-direction: row;
 
   &__container {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    align-items: center;
   }
 }
 </style>
