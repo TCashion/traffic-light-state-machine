@@ -2,7 +2,7 @@
   <div class="Base" id="base">
     <div class="Base__container">
       <light-board />
-      <Button />
+      <Button @button-clicked="handleButtonClick" />
     </div>
   </div>
 </template>
@@ -33,6 +33,10 @@ export default class Base extends Vue {
         this.context = state.context;
       })
       .start();
+  }
+
+  handleButtonClick() {
+    console.log("button clicked");
   }
 }
 </script>
