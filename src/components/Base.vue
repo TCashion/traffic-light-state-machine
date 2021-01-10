@@ -12,7 +12,9 @@ import { Component, Vue } from 'vue-property-decorator'
 import LightBoard from './LightBoard.vue'
 import Button from './Button.vue'
 import { lightMachine } from '../util/light-machine'
+import { LightEventObject } from '../util/light-machine-types'
 import { interpret } from 'xstate'
+import { LightColor } from '@/types/types'
 
 @Component({
   components: {
@@ -36,7 +38,12 @@ export default class Base extends Vue {
   }
 
   handleButtonClick() {
-    console.log('button clicked')
+    this.send({ type: 'TOGGLE_YELLOW' }, LightColor.YELLOW)
+  }
+
+  send(event: LightEventObject, payload: LightColor) {
+    this.lightService.send(event)
+    this.$store.commit('setCurrentLightColor', payload)
   }
 }
 </script>

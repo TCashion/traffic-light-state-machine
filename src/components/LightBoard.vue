@@ -23,7 +23,7 @@ import { LightColor } from '../types/types'
   },
 })
 export default class LightBoard extends Vue {
-  lightColors: LightColors[] = [
+  lightColors: LightColor[] = [
     LightColor.RED,
     LightColor.YELLOW,
     LightColor.GREEN,

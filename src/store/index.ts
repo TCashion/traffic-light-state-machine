@@ -13,7 +13,11 @@ export default new Vuex.Store({
       return state.currentLightColor
     },
   },
-  mutations: {},
+  mutations: {
+    setCurrentLightColor(state, payload) {
+      state.currentLightColor = payload
+    },
+  },
   actions: {},
   modules: {},
 })
