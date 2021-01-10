@@ -1,3 +1,4 @@
+import { LightColor } from '@/types/types'
 import { EventObject } from 'xstate'
 
 export const LIGHT = 'light'

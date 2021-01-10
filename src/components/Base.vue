@@ -43,6 +43,8 @@ export default class Base extends Vue {
 
   send(event: LightEventObject, payload: LightColor) {
     this.lightService.send(event)
+
+    // update the store
     this.$store.commit('setCurrentLightColor', payload)
   }
 }
