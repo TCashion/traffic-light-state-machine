@@ -2,7 +2,12 @@
   <div class="LightBoard">
     <h1>Light Board</h1>
     <div class="LightBoard__panel">
-      <Light v-for="color in lightColors" :key="color" :color="color" />
+      <Light
+        v-for="(color, index) in lightColors"
+        :key="color"
+        :lightOn="!!currentLightSequence[index]"
+        :color="lightColors[index]"
+      />
     </div>
   </div>
 </template>
@@ -10,7 +15,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import Light from './Light.vue'
-import { LightColors } from '../types/types'
+import { LightColor } from '../types/types'
 
 @Component({
   components: {
@@ -19,10 +24,24 @@ import { LightColors } from '../types/types'
 })
 export default class LightBoard extends Vue {
   lightColors: LightColors[] = [
-    LightColors.RED,
-    LightColors.YELLOW,
-    LightColors.GREEN,
+    LightColor.RED,
+    LightColor.YELLOW,
+    LightColor.GREEN,
   ]
+
+  lightSequence = {
+    [LightColor.RED]: [1, 0, 0],
+    [LightColor.YELLOW]: [0, 1, 0],
+    [LightColor.GREEN]: [0, 0, 1],
+  }
+
+  get currentLightColor(): LightColor {
+    return this.$store.getters.getCurrentLightColor
+  }
+
+  get currentLightSequence() {
+    return this.lightSequence[this.currentLightColor]
+  }
 }
 </script>
 

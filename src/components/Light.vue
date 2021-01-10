@@ -1,5 +1,5 @@
 <template>
-  <div :class="`Light ${color}`"></div>
+  <div :class="[lightOn ? color : 'off', 'Light']"></div>
 </template>
 
 <script lang="ts">
@@ -8,6 +8,8 @@ import { Vue, Component, Prop } from 'vue-property-decorator'
 @Component
 export default class Light extends Vue {
   @Prop({ type: String, required: true }) readonly color!: string
+  @Prop({ type: Boolean, required: true, default: false })
+  readonly lightOn!: boolean
 }
 </script>
 

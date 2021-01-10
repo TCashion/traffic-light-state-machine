@@ -6,9 +6,13 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    currentSwitchState: LightState.GREEN,
+    currentLightColor: LightState.GREEN,
   },
-  getters: {},
+  getters: {
+    getCurrentLightColor(state) {
+      return state.currentLightColor
+    },
+  },
   mutations: {},
   actions: {},
   modules: {},
