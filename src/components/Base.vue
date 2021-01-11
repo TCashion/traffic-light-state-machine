@@ -33,6 +33,9 @@ export default class Base extends Vue {
       .onTransition(state => {
         this.current = state
         this.context = state.context
+
+        // update the store
+        this.$store.commit('setCurrentLightColor', state.value)
       })
       .start()
   }
@@ -43,9 +46,6 @@ export default class Base extends Vue {
 
   send(event: LightEventObject, payload: LightColor) {
     this.lightService.send(event)
-
-    // update the store
-    this.$store.commit('setCurrentLightColor', payload)
   }
 }
 </script>

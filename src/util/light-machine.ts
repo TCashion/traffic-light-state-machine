@@ -12,9 +12,11 @@ import {
 export const lightMachine = Machine<void, LightStateSchema, LightEventObject>(
   {
     id: LIGHT,
-    initial: LightState.RED,
+    initial: LightState.GREEN,
     states: {
       [LightState.RED]: {
+        entry: 'notifyEnteringRed',
+        exit: 'notifyExitingRed',
         on: {
           TOGGLE_GREEN: {
             target: LightState.GREEN,
@@ -22,7 +24,8 @@ export const lightMachine = Machine<void, LightStateSchema, LightEventObject>(
         },
       },
       [LightState.YELLOW]: {
-        entry: () => console.log('notifyYellow'),
+        entry: 'notifyEnteringYellow',
+        exit: 'notifyExitingYellow',
         on: {
           TOGGLE_RED: {
             target: LightState.RED,
@@ -30,6 +33,8 @@ export const lightMachine = Machine<void, LightStateSchema, LightEventObject>(
         },
       },
       [LightState.GREEN]: {
+        entry: 'notifyEnteringGreen',
+        exit: 'notifyExitingGreen',
         on: {
           TOGGLE_YELLOW: {
             target: LightState.YELLOW,
@@ -40,14 +45,23 @@ export const lightMachine = Machine<void, LightStateSchema, LightEventObject>(
   },
   {
     actions: {
-      notifyYellow: (context, event) => {
-        console.log('changed to yellow')
+      notifyEnteringYellow: () => {
+        console.log('Entering yellow')
       },
-      notifyGreen: (context, event) => {
-        console.log('changed to green')
+      notifyExitingYellow: () => {
+        console.log('Exiting yellow')
       },
-      notifyRed: (context, event) => {
-        console.log('changed to Red')
+      notifyEnteringGreen: () => {
+        console.log('Entering green')
+      },
+      notifyExitingGreen: () => {
+        console.log('Exiting green')
+      },
+      notifyEnteringRed: () => {
+        console.log('Entering Red')
+      },
+      notifyExitingRed: () => {
+        console.log('Exiting Red')
       },
     },
   }
