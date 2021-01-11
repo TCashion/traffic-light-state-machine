@@ -1,4 +1,4 @@
-import { Machine, send } from 'xstate'
+import { Machine } from 'xstate'
 import {
   LIGHT,
   LightState,
@@ -12,39 +12,61 @@ import {
 export const lightMachine = Machine<void, LightStateSchema, LightEventObject>(
   {
     id: LIGHT,
-    initial: LightState.GREEN,
+    initial: LightState.IDLE,
     states: {
+      [LightState.IDLE]: {
+        entry: 'notifyEnteringIdle',
+        exit: ['notifyExitingIdle', 'sendTelemetry'],
+        on: {
+          TOGGLE_GREEN: LightState.GREEN,
+        },
+      },
       [LightState.RED]: {
         entry: 'notifyEnteringRed',
-        exit: 'notifyExitingRed',
+        exit: ['notifyExitingRed', 'sendTelemetry'],
+        after: {
+          5000: LightState.GREEN,
+        },
         on: {
-          TOGGLE_GREEN: {
-            target: LightState.GREEN,
-          },
+          TOGGLE_IDLE: LightState.IDLE,
         },
       },
       [LightState.YELLOW]: {
         entry: 'notifyEnteringYellow',
-        exit: 'notifyExitingYellow',
+        exit: ['notifyExitingYellow', 'sendTelemetry'],
+        after: {
+          2000: LightState.RED,
+        },
         on: {
-          TOGGLE_RED: {
-            target: LightState.RED,
-          },
+          TOGGLE_IDLE: LightState.IDLE,
         },
       },
       [LightState.GREEN]: {
         entry: 'notifyEnteringGreen',
-        exit: 'notifyExitingGreen',
+        exit: ['notifyExitingGreen', 'sendTelemetry'],
         on: {
-          TOGGLE_YELLOW: {
-            target: LightState.YELLOW,
-          },
+          TOGGLE_IDLE: LightState.IDLE,
+        },
+        after: {
+          5000: { target: LightState.YELLOW },
         },
       },
     },
   },
   {
     actions: {
+      notifyEnteringIdle: () => {
+        console.log('Light is now idle')
+      },
+      notifyExitingIdle: () => {
+        console.log('Light is no longer idle')
+      },
+      notifyEnteringRed: () => {
+        console.log('Entering Red')
+      },
+      notifyExitingRed: () => {
+        console.log('Exiting Red')
+      },
       notifyEnteringYellow: () => {
         console.log('Entering yellow')
       },
@@ -57,11 +79,8 @@ export const lightMachine = Machine<void, LightStateSchema, LightEventObject>(
       notifyExitingGreen: () => {
         console.log('Exiting green')
       },
-      notifyEnteringRed: () => {
-        console.log('Entering Red')
-      },
-      notifyExitingRed: () => {
-        console.log('Exiting Red')
+      sendTelemetry: () => {
+        console.log('time:', Date.now())
       },
     },
   }

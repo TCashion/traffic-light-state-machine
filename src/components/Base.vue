@@ -2,7 +2,10 @@
   <div class="Base" id="base">
     <div class="Base__container">
       <light-board />
-      <Button @button-clicked="handleButtonClick" />
+      <div class="Base__container__buttons">
+        <Button buttonCopy="Start" @button-clicked="handleStartButtonClick" />
+        <Button buttonCopy="Stop" @button-clicked="handleStopButtonClick" />
+      </div>
     </div>
   </div>
 </template>
@@ -14,7 +17,6 @@ import Button from './Button.vue'
 import { lightMachine } from '../util/light-machine'
 import { LightEventObject } from '../util/light-machine-types'
 import { interpret } from 'xstate'
-import { LightColor } from '@/types/types'
 
 @Component({
   components: {
@@ -40,11 +42,15 @@ export default class Base extends Vue {
       .start()
   }
 
-  handleButtonClick() {
-    this.send({ type: 'TOGGLE_YELLOW' }, LightColor.YELLOW)
+  handleStartButtonClick() {
+    this.send({ type: 'TOGGLE_GREEN' })
   }
 
-  send(event: LightEventObject, payload: LightColor) {
+  handleStopButtonClick() {
+    this.send({ type: 'TOGGLE_IDLE' })
+  }
+
+  send(event: LightEventObject) {
     this.lightService.send(event)
   }
 }
@@ -59,6 +65,11 @@ export default class Base extends Vue {
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    &__buttons {
+      display: flex;
+      flex-direction: column;
+    }
   }
 }
 </style>

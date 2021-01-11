@@ -1,14 +1,16 @@
 <template>
   <button class="Button" type="button" @click="$emit('button-clicked')">
-    Start
+    {{ buttonCopy }}
   </button>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
+import { Vue, Component, Prop } from 'vue-property-decorator'
 
 @Component
-class Button extends Vue {}
+class Button extends Vue {
+  @Prop({ type: String, required: true }) readonly buttonCopy!: string
+}
 
 export default Button
 </script>
@@ -16,5 +18,6 @@ export default Button
 <style lang="scss">
 .Button {
   width: fit-content;
+  margin: 3px;
 }
 </style>
