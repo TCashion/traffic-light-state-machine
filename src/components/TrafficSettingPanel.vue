@@ -29,13 +29,10 @@ export default class TrafficSettingPanel extends Vue {
     TrafficSetting.BROKEN,
   ]
 
-  get currentTrafficSetting(): TrafficSetting {
-    return this.$store.getters.getCurrentTrafficSetting
-  }
-
   onChange(eventTarget: HTMLSelectElement) {
     const newTrafficSetting = eventTarget.value
     this.$store.commit('setCurrentTrafficSetting', newTrafficSetting)
+    this.$emit('traffic-setting-changed', newTrafficSetting)
   }
 }
 </script>

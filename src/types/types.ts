@@ -4,6 +4,7 @@ export interface Light {
 
 export enum LightColor {
   IDLE = 'idle',
+  OFF = 'off',
   RED = 'red',
   YELLOW = 'yellow',
   GREEN = 'green',

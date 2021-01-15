@@ -8,7 +8,7 @@
       </div>
     </div>
     <div class="Base__container">
-      <traffic-setting-panel />
+      <traffic-setting-panel @traffic-setting-changed="updateTrafficSetting" />
     </div>
   </div>
 </template>
@@ -20,6 +20,7 @@ import Button from './Button.vue'
 import TrafficSettingPanel from './TrafficSettingPanel.vue'
 import { lightMachine } from '../util/light-machine'
 import { LightEventObject } from '../util/light-machine-types'
+import { TrafficSetting } from '../store/store-types'
 import { interpret } from 'xstate'
 
 @Component({
@@ -35,6 +36,9 @@ export default class Base extends Vue {
   context = lightMachine.context
   current = lightMachine.initialState
 
+  currentTrafficSetting: TrafficSetting = this.$store.getters
+    .getCurrentTrafficSetting
+
   created() {
     this.lightService
       .onTransition(state => {
@@ -48,15 +52,19 @@ export default class Base extends Vue {
   }
 
   handleStartButtonClick() {
-    this.send({ type: 'TOGGLE_GREEN' })
+    this.send({ type: 'TOGGLE_GREEN' }, this.currentTrafficSetting)
   }
 
   handleStopButtonClick() {
     this.send({ type: 'TOGGLE_IDLE' })
   }
 
-  send(event: LightEventObject) {
-    this.lightService.send(event)
+  send(event: LightEventObject, trafficSetting?: TrafficSetting) {
+    this.lightService.send(event, { data: trafficSetting }) // TODO: pair the setting passed in here to the guards defined in the state machine
+  }
+
+  updateTrafficSetting(newTrafficSetting: TrafficSetting) {
+    this.currentTrafficSetting = newTrafficSetting
   }
 }
 </script>

@@ -4,9 +4,16 @@ export const LIGHT = 'light'
 
 export enum LightState {
   IDLE = 'idle',
+  OFF = 'off',
   RED = 'red',
   YELLOW = 'yellow',
   GREEN = 'green',
+}
+
+export enum LightMachineGuards {
+  LOW_TRAFFIC = 'lowTraffic',
+  HIGH_TRAFFIC = 'highTraffic',
+  BROKEN = 'broken',
 }
 
 export interface LightEventObject extends EventObject {
@@ -16,6 +23,7 @@ export interface LightEventObject extends EventObject {
 export interface LightStateSchema {
   states: {
     [LightState.IDLE]: {}
+    [LightState.OFF]: {}
     [LightState.RED]: {}
     [LightState.YELLOW]: {}
     [LightState.GREEN]: {}

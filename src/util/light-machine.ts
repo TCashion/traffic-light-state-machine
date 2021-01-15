@@ -4,6 +4,7 @@ import {
   LightState,
   LightEventObject,
   LightStateSchema,
+  LightMachineGuards,
 } from './light-machine-types'
 
 // when toggled on, the red light should stay for five seconds
@@ -21,11 +22,30 @@ export const lightMachine = Machine<void, LightStateSchema, LightEventObject>(
           TOGGLE_GREEN: LightState.GREEN,
         },
       },
+      [LightState.OFF]: {
+        after: {
+          750: {
+            target: LightState.RED,
+            cond: LightMachineGuards.BROKEN,
+          },
+        },
+      },
       [LightState.RED]: {
         entry: 'notifyEnteringRed',
         exit: ['notifyExitingRed', 'sendTelemetry'],
         after: {
-          5000: LightState.GREEN,
+          5000: {
+            target: LightState.GREEN,
+            cond: LightMachineGuards.HIGH_TRAFFIC,
+          },
+          1000: {
+            target: LightState.GREEN,
+            cond: LightMachineGuards.LOW_TRAFFIC,
+          },
+          750: {
+            target: LightState.OFF,
+            cond: LightMachineGuards.BROKEN,
+          },
         },
         on: {
           TOGGLE_IDLE: LightState.IDLE,
@@ -48,6 +68,7 @@ export const lightMachine = Machine<void, LightStateSchema, LightEventObject>(
           TOGGLE_IDLE: LightState.IDLE,
         },
         after: {
+          0: { target: LightState.RED, cond: LightMachineGuards.BROKEN },
           5000: { target: LightState.YELLOW },
         },
       },
@@ -81,6 +102,17 @@ export const lightMachine = Machine<void, LightStateSchema, LightEventObject>(
       },
       sendTelemetry: () => {
         console.log('time:', Date.now())
+      },
+    },
+    guards: {
+      [LightMachineGuards.LOW_TRAFFIC]: () => {
+        return false
+      },
+      [LightMachineGuards.HIGH_TRAFFIC]: () => {
+        return false
+      },
+      [LightMachineGuards.BROKEN]: () => {
+        return true
       },
     },
   }

@@ -33,6 +33,7 @@ export default class LightBoard extends Vue {
 
   lightSequence = {
     [LightColor.IDLE]: [0, 0, 0],
+    [LightColor.OFF]: [0, 0, 0],
     [LightColor.RED]: [1, 0, 0],
     [LightColor.YELLOW]: [0, 1, 0],
     [LightColor.GREEN]: [0, 0, 1],
