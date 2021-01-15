@@ -16,10 +16,10 @@ export default class Light extends Vue {
 <style lang="scss">
 .Light {
   height: 50px;
-  width: 50px;
-  border: 2px solid black;
+  width: 65px;
   margin: 1rem;
   border-radius: 50%;
+  border-top: 15px grey solid;
 }
 
 .red {

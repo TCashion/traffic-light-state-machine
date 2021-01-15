@@ -1,7 +1,7 @@
 <template>
   <div class="Base" id="base">
     <div class="Base__container">
-      <light-board />
+      <light-board :currentLightColor="current.value" />
       <div class="Base__container__buttons">
         <Button buttonCopy="Start" @button-clicked="handleStartButtonClick" />
         <Button buttonCopy="Stop" @button-clicked="handleStopButtonClick" />
@@ -36,7 +36,7 @@ export default class Base extends Vue {
         this.current = state
         this.context = state.context
 
-        // update the store
+        // update the store with new light color
         this.$store.commit('setCurrentLightColor', state.value)
       })
       .start()
