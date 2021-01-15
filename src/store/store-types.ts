@@ -3,3 +3,9 @@ export enum LightState {
   YELLOW = 'yellow',
   GREEN = 'green',
 }
+
+export enum TrafficSetting {
+  LOW = 'low',
+  HIGH = 'high',
+  BROKEN = 'broken',
+}

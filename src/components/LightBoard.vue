@@ -44,7 +44,7 @@ export default class LightBoard extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .LightBoard {
   width: 25rem;
   height: 100%;

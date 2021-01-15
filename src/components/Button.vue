@@ -15,7 +15,7 @@ class Button extends Vue {
 export default Button
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .Button {
   width: fit-content;
   margin: 3px;

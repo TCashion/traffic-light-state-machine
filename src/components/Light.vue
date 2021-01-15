@@ -13,7 +13,7 @@ export default class Light extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .Light {
   height: 50px;
   width: 65px;
