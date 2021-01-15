@@ -8,7 +8,7 @@
       </div>
     </div>
     <div class="Base__container">
-      <traffic-setting />
+      <traffic-setting-panel />
     </div>
   </div>
 </template>
@@ -17,7 +17,7 @@
 import { Component, Vue } from 'vue-property-decorator'
 import LightBoard from './LightBoard.vue'
 import Button from './Button.vue'
-import TrafficSetting from './TrafficSetting.vue'
+import TrafficSettingPanel from './TrafficSettingPanel.vue'
 import { lightMachine } from '../util/light-machine'
 import { LightEventObject } from '../util/light-machine-types'
 import { interpret } from 'xstate'
@@ -26,7 +26,7 @@ import { interpret } from 'xstate'
   components: {
     Button,
     LightBoard,
-    TrafficSetting,
+    TrafficSettingPanel,
   },
 })
 export default class Base extends Vue {

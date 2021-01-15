@@ -21,7 +21,7 @@ export default new Vuex.Store({
     setCurrentLightColor(state, payload) {
       state.currentLightColor = payload
     },
-    setCurrentTrafficSetting(state, payload) {
+    setCurrentTrafficSetting(state, payload: TrafficSetting) {
       state.currentTrafficSetting = payload
     },
   },
