@@ -53,6 +53,7 @@ export const lightMachine = Machine<void, LightStateSchema, LightEventObject>(
         },
         on: {
           TOGGLE_IDLE: LightState.IDLE,
+          TOGGLE_RED: LightState.RED,
         },
       },
       [LightState.YELLOW]: {
