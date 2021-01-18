@@ -4,8 +4,10 @@ import {
   LightState,
   LightEventObject,
   LightStateSchema,
-  LightMachineGuards,
+  LightMachineGuard,
 } from './light-machine-types'
+import store from '../store'
+import { TrafficSetting } from '@/store/store-types'
 
 // when toggled on, the red light should stay for five seconds
 // after the light is green for 5 seconds, should be yellow for 2 seconds
@@ -17,7 +19,7 @@ export const lightMachine = Machine<void, LightStateSchema, LightEventObject>(
     states: {
       [LightState.IDLE]: {
         entry: 'notifyEnteringIdle',
-        exit: ['notifyExitingIdle', 'sendTelemetry'],
+        exit: ['notifyExitingIdle'],
         on: {
           TOGGLE_GREEN: LightState.GREEN,
         },
@@ -26,25 +28,24 @@ export const lightMachine = Machine<void, LightStateSchema, LightEventObject>(
         after: {
           750: {
             target: LightState.RED,
-            cond: LightMachineGuards.BROKEN,
+            cond: LightMachineGuard.BROKEN,
           },
         },
       },
       [LightState.RED]: {
         entry: 'notifyEnteringRed',
-        exit: ['notifyExitingRed', 'sendTelemetry'],
         after: {
-          5000: {
+          6000: {
             target: LightState.GREEN,
-            cond: LightMachineGuards.HIGH_TRAFFIC,
+            cond: LightMachineGuard.HIGH_TRAFFIC,
           },
-          1000: {
+          3000: {
             target: LightState.GREEN,
-            cond: LightMachineGuards.LOW_TRAFFIC,
+            cond: LightMachineGuard.LOW_TRAFFIC,
           },
           750: {
             target: LightState.OFF,
-            cond: LightMachineGuards.BROKEN,
+            cond: LightMachineGuard.BROKEN,
           },
         },
         on: {
@@ -53,9 +54,8 @@ export const lightMachine = Machine<void, LightStateSchema, LightEventObject>(
       },
       [LightState.YELLOW]: {
         entry: 'notifyEnteringYellow',
-        exit: ['notifyExitingYellow', 'sendTelemetry'],
         after: {
-          2000: LightState.RED,
+          1500: LightState.RED,
         },
         on: {
           TOGGLE_IDLE: LightState.IDLE,
@@ -63,13 +63,12 @@ export const lightMachine = Machine<void, LightStateSchema, LightEventObject>(
       },
       [LightState.GREEN]: {
         entry: 'notifyEnteringGreen',
-        exit: ['notifyExitingGreen', 'sendTelemetry'],
         on: {
           TOGGLE_IDLE: LightState.IDLE,
         },
         after: {
-          0: { target: LightState.RED, cond: LightMachineGuards.BROKEN },
-          5000: { target: LightState.YELLOW },
+          0: { target: LightState.RED, cond: LightMachineGuard.BROKEN },
+          3000: { target: LightState.YELLOW },
         },
       },
     },
@@ -85,34 +84,22 @@ export const lightMachine = Machine<void, LightStateSchema, LightEventObject>(
       notifyEnteringRed: () => {
         console.log('Entering Red')
       },
-      notifyExitingRed: () => {
-        console.log('Exiting Red')
-      },
       notifyEnteringYellow: () => {
         console.log('Entering yellow')
-      },
-      notifyExitingYellow: () => {
-        console.log('Exiting yellow')
       },
       notifyEnteringGreen: () => {
         console.log('Entering green')
       },
-      notifyExitingGreen: () => {
-        console.log('Exiting green')
-      },
-      sendTelemetry: () => {
-        console.log('time:', Date.now())
-      },
     },
     guards: {
-      [LightMachineGuards.LOW_TRAFFIC]: () => {
-        return false
+      [LightMachineGuard.LOW_TRAFFIC]: () => {
+        return store.getters.getCurrentTrafficSetting === TrafficSetting.LOW
       },
-      [LightMachineGuards.HIGH_TRAFFIC]: () => {
-        return false
+      [LightMachineGuard.HIGH_TRAFFIC]: () => {
+        return store.getters.getCurrentTrafficSetting === TrafficSetting.HIGH
       },
-      [LightMachineGuards.BROKEN]: () => {
-        return true
+      [LightMachineGuard.BROKEN]: () => {
+        return store.getters.getCurrentTrafficSetting === TrafficSetting.BROKEN
       },
     },
   }

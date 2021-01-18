@@ -1,4 +1,5 @@
 import { EventObject } from 'xstate'
+import { TrafficSetting } from '../store/store-types'
 
 export const LIGHT = 'light'
 
@@ -10,7 +11,7 @@ export enum LightState {
   GREEN = 'green',
 }
 
-export enum LightMachineGuards {
+export enum LightMachineGuard {
   LOW_TRAFFIC = 'lowTraffic',
   HIGH_TRAFFIC = 'highTraffic',
   BROKEN = 'broken',
@@ -21,6 +22,9 @@ export interface LightEventObject extends EventObject {
 }
 
 export interface LightStateSchema {
+  context: {
+    setting: TrafficSetting | undefined
+  }
   states: {
     [LightState.IDLE]: {}
     [LightState.OFF]: {}
