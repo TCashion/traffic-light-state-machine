@@ -65,6 +65,10 @@ export default class Base extends Vue {
 
   updateTrafficSetting(newTrafficSetting: TrafficSetting) {
     this.currentTrafficSetting = newTrafficSetting
+    this.lightService.send({
+      type: 'TOGGLE_RED',
+      trafficSetting: this.currentTrafficSetting,
+    })
   }
 }
 </script>

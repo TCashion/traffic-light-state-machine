@@ -31,6 +31,9 @@ export const lightMachine = Machine<void, LightStateSchema, LightEventObject>(
             cond: LightMachineGuard.BROKEN,
           },
         },
+        on: {
+          TOGGLE_RED: { target: LightState.RED },
+        },
       },
       [LightState.RED]: {
         entry: 'notifyEnteringRed',
@@ -59,12 +62,20 @@ export const lightMachine = Machine<void, LightStateSchema, LightEventObject>(
         },
         on: {
           TOGGLE_IDLE: LightState.IDLE,
+          TOGGLE_RED: {
+            target: LightState.RED,
+            cond: LightMachineGuard.BROKEN,
+          },
         },
       },
       [LightState.GREEN]: {
         entry: 'notifyEnteringGreen',
         on: {
           TOGGLE_IDLE: LightState.IDLE,
+          TOGGLE_RED: {
+            target: LightState.RED,
+            cond: LightMachineGuard.BROKEN,
+          },
         },
         after: {
           0: { target: LightState.RED, cond: LightMachineGuard.BROKEN },
