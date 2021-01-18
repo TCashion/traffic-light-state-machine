@@ -52,7 +52,11 @@ export default class Base extends Vue {
   }
 
   handleStartButtonClick() {
-    this.send({ type: 'TOGGLE_GREEN' })
+    const trafficSetting: TrafficSetting = this.currentTrafficSetting
+    this.lightService.send({
+      type: 'TOGGLE_GREEN',
+      trafficSetting,
+    })
   }
 
   handleStopButtonClick() {
@@ -60,6 +64,7 @@ export default class Base extends Vue {
   }
 
   send(event: LightEventObject) {
+    console.log('event to send: ', event)
     this.lightService.send(event) // TODO: pair the setting passed in here to the guards defined in the state machine
   }
 

@@ -21,7 +21,10 @@ export const lightMachine = Machine<void, LightStateSchema, LightEventObject>(
         entry: 'notifyEnteringIdle',
         exit: ['notifyExitingIdle'],
         on: {
-          TOGGLE_GREEN: LightState.GREEN,
+          TOGGLE_GREEN: {
+            target: LightState.GREEN,
+            cond: LightMachineGuard.WORKING,
+          },
         },
       },
       [LightState.OFF]: {
@@ -104,13 +107,24 @@ export const lightMachine = Machine<void, LightStateSchema, LightEventObject>(
       },
     },
     guards: {
-      [LightMachineGuard.LOW_TRAFFIC]: () => {
+      // TODO: GET THE REST OF THESE TO REFERENCE THE event.trafficSetting PROPERTY
+      // INSTEAD OF REFERENCEING THE STORE.
+      [LightMachineGuard.LOW_TRAFFIC]: (context, event) => {
+        console.log('context: ', context)
+        console.log('event: ', event)
         return store.getters.getCurrentTrafficSetting === TrafficSetting.LOW
       },
-      [LightMachineGuard.HIGH_TRAFFIC]: () => {
+      [LightMachineGuard.HIGH_TRAFFIC]: (context, event) => {
+        console.log('context: ', context)
+        console.log('event: ', event)
         return store.getters.getCurrentTrafficSetting === TrafficSetting.HIGH
       },
-      [LightMachineGuard.BROKEN]: () => {
+      [LightMachineGuard.WORKING]: (context, event) => {
+        return event.trafficSetting !== TrafficSetting.BROKEN
+      },
+      [LightMachineGuard.BROKEN]: (context, event) => {
+        console.log('context: ', context)
+        console.log('event: ', event)
         return store.getters.getCurrentTrafficSetting === TrafficSetting.BROKEN
       },
     },

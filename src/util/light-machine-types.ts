@@ -14,6 +14,7 @@ export enum LightState {
 export enum LightMachineGuard {
   LOW_TRAFFIC = 'lowTraffic',
   HIGH_TRAFFIC = 'highTraffic',
+  WORKING = 'working',
   BROKEN = 'broken',
 }
 
