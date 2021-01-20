@@ -52,8 +52,7 @@ export default class Base extends Vue {
   }
 
   handleStartButtonClick() {
-    // const trafficSetting: TrafficSetting = this.currentTrafficSetting
-    this.lightService.send({
+    this.send({
       type: 'TOGGLE_ON',
       trafficSetting: this.currentTrafficSetting,
     })
@@ -64,13 +63,12 @@ export default class Base extends Vue {
   }
 
   send(event: LightEventObject) {
-    console.log('event to send: ', event)
     this.lightService.send({ ...event })
   }
 
   updateTrafficSetting(newTrafficSetting: TrafficSetting) {
     this.currentTrafficSetting = newTrafficSetting
-    this.lightService.send({
+    this.send({
       type: 'TOGGLE_RED',
       trafficSetting: this.currentTrafficSetting,
     })

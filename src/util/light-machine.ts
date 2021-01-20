@@ -19,7 +19,7 @@ export const lightMachine = Machine<void, LightStateSchema, LightEventObject>(
     states: {
       [LightState.IDLE]: {
         entry: 'notifyEnteringIdle',
-        exit: ['notifyExitingIdle'],
+        exit: ['notifyExitingIdle', 'sendTimeStamp'],
         on: {
           TOGGLE_ON: [
             {
@@ -46,7 +46,6 @@ export const lightMachine = Machine<void, LightStateSchema, LightEventObject>(
         },
       },
       [LightState.RED]: {
-        entry: 'notifyEnteringRed',
         after: {
           6000: {
             target: LightState.GREEN,
@@ -67,7 +66,6 @@ export const lightMachine = Machine<void, LightStateSchema, LightEventObject>(
         },
       },
       [LightState.YELLOW]: {
-        entry: 'notifyEnteringYellow',
         after: {
           1500: LightState.RED,
         },
@@ -80,7 +78,6 @@ export const lightMachine = Machine<void, LightStateSchema, LightEventObject>(
         },
       },
       [LightState.GREEN]: {
-        entry: 'notifyEnteringGreen',
         on: {
           TOGGLE_IDLE: LightState.IDLE,
           TOGGLE_RED: {
@@ -103,39 +100,28 @@ export const lightMachine = Machine<void, LightStateSchema, LightEventObject>(
       notifyExitingIdle: () => {
         console.log('Light is no longer idle')
       },
-      notifyEnteringRed: () => {
-        console.log('Entering Red')
-      },
-      notifyEnteringYellow: () => {
-        console.log('Entering yellow')
-      },
-      notifyEnteringGreen: () => {
-        console.log('Entering green')
+      sendTimeStamp: () => {
+        console.log(Date.now())
       },
     },
     guards: {
-      // TODO: GET THE REST OF THESE TO REFERENCE THE event.trafficSetting PROPERTY
-      // INSTEAD OF REFERENCEING THE STORE.
-      [LightMachineGuard.LOW_TRAFFIC]: (context, event) => {
-        console.log('context 1: ', context)
-        console.log('event 1: ', event)
-        console.log('event.trafficSetting 1: ', event.trafficSetting)
+      [LightMachineGuard.LOW_TRAFFIC]: () => {
+        // this references the store value instead of the event.trafficSetting because
+        // the machine needs to know high vs. low value independent of an event
         return store.getters.getCurrentTrafficSetting === TrafficSetting.LOW
       },
-      [LightMachineGuard.HIGH_TRAFFIC]: (context, event) => {
-        console.log('context 2: ', context)
-        console.log('event 2: ', event)
-        console.log('event.trafficSetting 2: ', event.trafficSetting)
+      [LightMachineGuard.HIGH_TRAFFIC]: () => {
+        // see comment above
         return store.getters.getCurrentTrafficSetting === TrafficSetting.HIGH
       },
       [LightMachineGuard.WORKING]: (context, event) => {
         return event.trafficSetting !== TrafficSetting.BROKEN
       },
       [LightMachineGuard.BROKEN]: (context, event) => {
-        console.log('context 3: ', context)
-        console.log('event 3: ', event)
-        console.log('event.trafficSetting 3: ', event.trafficSetting)
-        return store.getters.getCurrentTrafficSetting === TrafficSetting.BROKEN
+        return (
+          event.trafficSetting === TrafficSetting.BROKEN ||
+          store.getters.getCurrentTrafficSetting === TrafficSetting.BROKEN
+        )
       },
     },
   }
