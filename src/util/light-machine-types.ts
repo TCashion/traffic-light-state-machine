@@ -19,7 +19,12 @@ export enum LightMachineGuard {
 }
 
 export interface LightEventObject extends EventObject {
-  type: 'TOGGLE_RED' | 'TOGGLE_YELLOW' | 'TOGGLE_GREEN' | 'TOGGLE_IDLE'
+  type:
+    | 'TOGGLE_RED'
+    | 'TOGGLE_YELLOW'
+    | 'TOGGLE_GREEN'
+    | 'TOGGLE_IDLE'
+    | 'TOGGLE_ON'
   trafficSetting?: TrafficSetting
 }
 

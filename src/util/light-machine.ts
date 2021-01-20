@@ -21,10 +21,16 @@ export const lightMachine = Machine<void, LightStateSchema, LightEventObject>(
         entry: 'notifyEnteringIdle',
         exit: ['notifyExitingIdle'],
         on: {
-          TOGGLE_GREEN: {
-            target: LightState.GREEN,
-            cond: LightMachineGuard.WORKING,
-          },
+          TOGGLE_ON: [
+            {
+              target: LightState.GREEN,
+              cond: LightMachineGuard.WORKING,
+            },
+            {
+              target: LightState.RED,
+              cond: LightMachineGuard.BROKEN,
+            },
+          ],
         },
       },
       [LightState.OFF]: {
@@ -36,6 +42,7 @@ export const lightMachine = Machine<void, LightStateSchema, LightEventObject>(
         },
         on: {
           TOGGLE_RED: { target: LightState.RED },
+          TOGGLE_IDLE: LightState.IDLE,
         },
       },
       [LightState.RED]: {
@@ -110,21 +117,24 @@ export const lightMachine = Machine<void, LightStateSchema, LightEventObject>(
       // TODO: GET THE REST OF THESE TO REFERENCE THE event.trafficSetting PROPERTY
       // INSTEAD OF REFERENCEING THE STORE.
       [LightMachineGuard.LOW_TRAFFIC]: (context, event) => {
-        console.log('context: ', context)
-        console.log('event: ', event)
+        console.log('context 1: ', context)
+        console.log('event 1: ', event)
+        console.log('event.trafficSetting 1: ', event.trafficSetting)
         return store.getters.getCurrentTrafficSetting === TrafficSetting.LOW
       },
       [LightMachineGuard.HIGH_TRAFFIC]: (context, event) => {
-        console.log('context: ', context)
-        console.log('event: ', event)
+        console.log('context 2: ', context)
+        console.log('event 2: ', event)
+        console.log('event.trafficSetting 2: ', event.trafficSetting)
         return store.getters.getCurrentTrafficSetting === TrafficSetting.HIGH
       },
       [LightMachineGuard.WORKING]: (context, event) => {
         return event.trafficSetting !== TrafficSetting.BROKEN
       },
       [LightMachineGuard.BROKEN]: (context, event) => {
-        console.log('context: ', context)
-        console.log('event: ', event)
+        console.log('context 3: ', context)
+        console.log('event 3: ', event)
+        console.log('event.trafficSetting 3: ', event.trafficSetting)
         return store.getters.getCurrentTrafficSetting === TrafficSetting.BROKEN
       },
     },
