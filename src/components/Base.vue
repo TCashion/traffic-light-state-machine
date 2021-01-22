@@ -35,7 +35,10 @@ import { interpret } from 'xstate'
 })
 export default class Base extends Vue {
   // state machine variables:
-  lightService = interpret(lightMachine)
+  lightService = interpret(
+    lightMachine
+    // { devTools: true } // Toggle for XState visualizer
+  )
   context = lightMachine.context
   current = lightMachine.initialState
 
