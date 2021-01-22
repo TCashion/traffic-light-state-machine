@@ -8,7 +8,10 @@
       </div>
     </div>
     <div class="Base__container">
-      <traffic-setting-panel @traffic-setting-changed="updateTrafficSetting" />
+      <traffic-setting-panel
+        @traffic-setting-changed="updateTrafficSetting"
+        :currentTrafficSetting="currentTrafficSetting"
+      />
     </div>
   </div>
 </template>
@@ -59,7 +62,9 @@ export default class Base extends Vue {
   }
 
   handleStopButtonClick() {
-    this.send({ type: 'TOGGLE_IDLE' })
+    this.$store.commit('setCurrentTrafficSetting', TrafficSetting.LOW)
+    this.currentTrafficSetting = TrafficSetting.LOW
+    this.send({ type: 'TOGGLE_OFF' })
   }
 
   send(event: LightEventObject) {

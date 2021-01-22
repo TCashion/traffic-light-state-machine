@@ -10,16 +10,22 @@ import store from '../store'
 import { TrafficSetting } from '@/store/store-types'
 
 // when toggled on, the red light should stay for five seconds
-// after the light is green for 5 seconds, should be yellow for 2 seconds
-// after the light is red for 5 seconds, toggle to yellow
+// after the light is green for 6 seconds, should be yellow for 2 seconds
+// after the light is red for 6 seconds, toggle to yellow
 export const lightMachine = Machine<void, LightStateSchema, LightEventObject>(
   {
     id: LIGHT,
-    initial: LightState.IDLE,
+    initial: LightState.OFF,
     states: {
-      [LightState.IDLE]: {
-        entry: 'notifyEnteringIdle',
-        exit: ['notifyExitingIdle', 'sendTimeStamp'],
+      [LightState.OFF]: {
+        entry: 'notifyEnteringOffState',
+        exit: ['notifyExitingOffState', 'sendTimeStamp'],
+        after: {
+          750: {
+            target: LightState.RED,
+            cond: LightMachineGuard.BROKEN,
+          },
+        },
         on: {
           TOGGLE_ON: [
             {
@@ -31,18 +37,8 @@ export const lightMachine = Machine<void, LightStateSchema, LightEventObject>(
               cond: LightMachineGuard.BROKEN,
             },
           ],
-        },
-      },
-      [LightState.OFF]: {
-        after: {
-          750: {
-            target: LightState.RED,
-            cond: LightMachineGuard.BROKEN,
-          },
-        },
-        on: {
           TOGGLE_RED: { target: LightState.RED },
-          TOGGLE_IDLE: LightState.IDLE,
+          TOGGLE_OFF: LightState.OFF,
         },
       },
       [LightState.RED]: {
@@ -61,7 +57,7 @@ export const lightMachine = Machine<void, LightStateSchema, LightEventObject>(
           },
         },
         on: {
-          TOGGLE_IDLE: LightState.IDLE,
+          TOGGLE_OFF: LightState.OFF,
           TOGGLE_RED: LightState.RED,
         },
       },
@@ -70,7 +66,7 @@ export const lightMachine = Machine<void, LightStateSchema, LightEventObject>(
           1500: LightState.RED,
         },
         on: {
-          TOGGLE_IDLE: LightState.IDLE,
+          TOGGLE_OFF: LightState.OFF,
           TOGGLE_RED: {
             target: LightState.RED,
             cond: LightMachineGuard.BROKEN,
@@ -79,7 +75,7 @@ export const lightMachine = Machine<void, LightStateSchema, LightEventObject>(
       },
       [LightState.GREEN]: {
         on: {
-          TOGGLE_IDLE: LightState.IDLE,
+          TOGGLE_OFF: LightState.OFF,
           TOGGLE_RED: {
             target: LightState.RED,
             cond: LightMachineGuard.BROKEN,
@@ -87,18 +83,25 @@ export const lightMachine = Machine<void, LightStateSchema, LightEventObject>(
         },
         after: {
           0: { target: LightState.RED, cond: LightMachineGuard.BROKEN },
-          3000: { target: LightState.YELLOW },
+          3000: {
+            target: LightState.YELLOW,
+            cond: LightMachineGuard.LOW_TRAFFIC,
+          },
+          6000: {
+            target: LightState.YELLOW,
+            cond: LightMachineGuard.HIGH_TRAFFIC,
+          },
         },
       },
     },
   },
   {
     actions: {
-      notifyEnteringIdle: () => {
-        console.log('Light is now idle')
+      notifyEnteringOffState: () => {
+        console.log('Light is now off')
       },
-      notifyExitingIdle: () => {
-        console.log('Light is no longer idle')
+      notifyExitingOffState: () => {
+        console.log('Light is now on')
       },
       sendTimeStamp: () => {
         console.log(Date.now())

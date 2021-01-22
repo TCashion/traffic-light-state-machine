@@ -4,7 +4,7 @@ import { TrafficSetting } from '../store/store-types'
 export const LIGHT = 'light'
 
 export enum LightState {
-  IDLE = 'idle',
+  // IDLE = 'idle',
   OFF = 'off',
   RED = 'red',
   YELLOW = 'yellow',
@@ -23,7 +23,7 @@ export interface LightEventObject extends EventObject {
     | 'TOGGLE_RED'
     | 'TOGGLE_YELLOW'
     | 'TOGGLE_GREEN'
-    | 'TOGGLE_IDLE'
+    | 'TOGGLE_OFF'
     | 'TOGGLE_ON'
   trafficSetting?: TrafficSetting
 }
@@ -33,7 +33,7 @@ export interface LightStateSchema {
     setting: TrafficSetting | undefined
   }
   states: {
-    [LightState.IDLE]: {}
+    // [LightState.IDLE]: {}
     [LightState.OFF]: {}
     [LightState.RED]: {}
     [LightState.YELLOW]: {}

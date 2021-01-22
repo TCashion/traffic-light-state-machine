@@ -1,5 +1,5 @@
 <template>
-  <div class="TrafficSetting">
+  <div class="TrafficSetting" :key="componentKey">
     <h3>Traffic Setting:</h3>
     <select
       class="TrafficSetting__select"
@@ -18,11 +18,15 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
+import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import { TrafficSetting } from '../store/store-types'
 
 @Component
 export default class TrafficSettingPanel extends Vue {
+  @Prop() currentTrafficSetting!: TrafficSetting
+
+  componentKey = 0
+
   trafficSettings: TrafficSetting[] = [
     TrafficSetting.LOW,
     TrafficSetting.HIGH,
@@ -33,6 +37,13 @@ export default class TrafficSettingPanel extends Vue {
     const newTrafficSetting = eventTarget.value
     this.$store.commit('setCurrentTrafficSetting', newTrafficSetting)
     this.$emit('traffic-setting-changed', newTrafficSetting)
+  }
+
+  @Watch('currentTrafficSetting')
+  onTrafficSettingChange() {
+    if (this.currentTrafficSetting === TrafficSetting.LOW) {
+      this.componentKey += 1
+    }
   }
 }
 </script>
