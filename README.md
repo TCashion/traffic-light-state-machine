@@ -13,6 +13,6 @@ This is a basic demonstration of [XState](https://xstate.js.org/) powering a tra
 
 If you'd like to make changes or experiment with the project, here are a few built-in commands for development: 
 
-`npm run build` - Compiles and minifies for production (Vue project default: See [Configuration Reference](https://cli.vuejs.org/config/))
-`npm run test:unit` - Run unit tests. 
-`npm run lint` - Lint and fix files
+* `npm run build` - Compiles and minifies for production (Vue project default: See [Configuration Reference](https://cli.vuejs.org/config/))
+* `npm run test:unit` - Run unit tests. 
+* `npm run lint` - Lint and fix files
