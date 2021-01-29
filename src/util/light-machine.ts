@@ -37,7 +37,6 @@ export const lightMachine = Machine<void, LightStateSchema, LightEventObject>(
               cond: LightMachineGuard.BROKEN,
             },
           ],
-          TOGGLE_RED: { target: LightState.RED },
           TOGGLE_OFF: LightState.OFF,
         },
       },

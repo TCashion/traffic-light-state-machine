@@ -36,8 +36,8 @@ import { interpret } from 'xstate'
 export default class Base extends Vue {
   // state machine variables:
   lightService = interpret(
-    lightMachine
-    // { devTools: true } // Toggle for XState visualizer
+    lightMachine,
+    { devTools: true } // Toggle for XState visualizer
   )
   context = lightMachine.context
   current = lightMachine.initialState
@@ -77,7 +77,10 @@ export default class Base extends Vue {
   updateTrafficSetting(newTrafficSetting: TrafficSetting) {
     this.currentTrafficSetting = newTrafficSetting
     this.send({
-      type: 'TOGGLE_RED',
+      type:
+        newTrafficSetting === TrafficSetting.BROKEN
+          ? 'TOGGLE_RED'
+          : 'TOGGLE_ON',
       trafficSetting: this.currentTrafficSetting,
     })
   }
