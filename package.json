@@ -1,5 +1,5 @@
 {
-  "name": "vue-useless-state-machine",
+  "name": "vue-traffic-light-machine",
   "version": "0.1.0",
   "private": true,
   "scripts": {
